@@ -1,3 +1,5 @@
+import time
+
 class edit_operation:
     def __init__(self, string1, string2):
         self.string1 = string1
@@ -111,13 +113,16 @@ class edit_operation:
         return line1, line2
 
 
-
+t = time.time()
 if __name__ == "__main__":
-    protein_A = 'MGLSDGEWQLVLKVWGKVEGDLPGHGQEVLIRLFKTHPETLEKFDKFKGLKTEDEMKASADLKKHGGTVLTALGNILKKKGQHEAELKPLAQSHATKHKISIKFLEYISEAIIHVLQSKHSADFGADAQAAMGKALELFRNDMAAKYKEFGFQG'
-    protein_B = 'MADFDAVLKCWGPVEADYTTMGGLVLTRLFKEHPETQKLFPKFAGIAQADIAGNAAISAHGATVLKKLGELLKAKGSHAAILKPLANSHATKHKIPINNFKLISEVLVKVMHEKAGLDAGGQTALRNVMGIIIADLEANYKELGFSG'
+    protein_A = 'seashells' #'MGLSDGEWQLVLKVWGKVEGDLPGHGQEVLIRLFKTHPETLEKFDKFKGLKTEDEMKASADLKKHGGTVLTALGNILKKKGQHEAELKPLAQSHATKHKISIKFLEYISEAIIHVLQSKHSADFGADAQAAMGKALELFRNDMAAKYKEFGFQG'
+    protein_B = 'appletree' #'MADFDAVLKCWGPVEADYTTMGGLVLTRLFKEHPETQKLFPKFAGIAQADIAGNAAISAHGATVLKKLGELLKAKGSHAAILKPLANSHATKHKIPINNFKLISEVLVKVMHEKAGLDAGGQTALRNVMGIIIADLEANYKELGFSG'
 
     test_case = edit_operation(protein_A, protein_B)
     transcript = test_case.optimal_transcript()
-    print(transcript)
+    print(transcript[0])
+    print(transcript[1])
     print( test_case.optimal_alignment(transcript[1])[0] )
     print( test_case.optimal_alignment(transcript[1])[1] )
+
+print(time.time() - t)
