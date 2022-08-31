@@ -1,5 +1,6 @@
 from re import I
 import numpy as np
 
-a = 'hello'
-print(a[:2])
+a = [[None] * 5] * 5
+
+print(1 == int('1'))

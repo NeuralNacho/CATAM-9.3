@@ -1,6 +1,4 @@
-import time
-
-class edit_operation:
+class edit_operations:
     def __init__(self, string1, string2):
         self.string1 = string1
         self.string2 = string2
@@ -44,7 +42,7 @@ class edit_operation:
 
                 # Update transcript row
                 # First find the operation used for minimal edit distance
-                operation = self.find_operation(distance_row[j] + 1, distance_row[j + 1] + 1, dist_temp1, char_match)
+                operation = self.find_operation(distance_row[j] + 1, distance_row[j + 1] + 1, dist_temp1 + char_match, char_match)
                 transcript_row[j + 1] = self.update_transcript(transcript_row, operation, tran_temp1, j)
 
                 dist_temp1 = dist_temp2
@@ -54,7 +52,7 @@ class edit_operation:
 
     def find_operation(self, dist1, dist2, dist3, char_match):
         # helper function for optimal_transcript
-        min_dist = min(dist1, dist2, dist3 + char_match)
+        min_dist = min(dist1, dist2, dist3)
 
         if dist1 == min_dist:
             return 'I'
@@ -117,9 +115,9 @@ if __name__ == "__main__":
     protein_A = 'MGLSDGEWQLVLKVWGKVEGDLPGHGQEVLIRLFKTHPETLEKFDKFKGLKTEDEMKASADLKKHGGTVLTALGNILKKKGQHEAELKPLAQSHATKHKISIKFLEYISEAIIHVLQSKHSADFGADAQAAMGKALELFRNDMAAKYKEFGFQG'
     protein_B = 'MADFDAVLKCWGPVEADYTTMGGLVLTRLFKEHPETQKLFPKFAGIAQADIAGNAAISAHGATVLKKLGELLKAKGSHAAILKPLANSHATKHKIPINNFKLISEVLVKVMHEKAGLDAGGQTALRNVMGIIIADLEANYKELGFSG'
 
-    test_case = edit_operation(protein_A, protein_B)
-    transcript = test_case.optimal_transcript()
+    output = edit_operations(protein_A, protein_B)
+    transcript = output.optimal_transcript()
     print(transcript[0])
     print(transcript[1])
-    print( test_case.optimal_alignment(transcript[1])[0] )
-    print( test_case.optimal_alignment(transcript[1])[1] )
+    print( output.optimal_alignment(transcript[1])[0] )
+    print( output.optimal_alignment(transcript[1])[1] )
