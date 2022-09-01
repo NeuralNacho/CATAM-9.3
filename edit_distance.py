@@ -19,7 +19,7 @@ class edit_distance:
         # Find D(i,j) for each i,j
         for i in range(len(self.string1)):
             for j in range(len(self.string2)):
-                char_match = 1  # for identifying is S_i == T_j
+                char_match = 1  # for identifying S_i == T_j
                 if self.string1[i] == self.string2[j]:
                     char_match = 0
 

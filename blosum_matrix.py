@@ -29,7 +29,8 @@ W -2 -3 -2 -4 -3 -2 -4 -4 -3 -2  -2 -3 -3 -1 -3 -2 -3  1  2 11'
 
     def create_matrix(self):
         row = 0
-        col = 1  # start at second index since (0,0) entry is empty
+        col = 1 
+        # start at second index since (0,0) entry is empty
         str_index = 0
 
         while str_index < len(self.blosum_string):
@@ -37,14 +38,17 @@ W -2 -3 -2 -4 -3 -2 -4 -4 -3 -2  -2 -3 -3 -1 -3 -2 -3  1  2 11'
                 str_index += 1
 
             elif self.blosum_string[str_index + 1] == ' ':
-                self.matrix[row][col] = self.blosum_string[str_index]
+                self.matrix[row][col] = \
+                    self.blosum_string[str_index]
                 str_index += 1
                 col += 1
             
             elif self.blosum_string[str_index + 1] != ' ':
                 # This is the case of a negative number
                 # No 2 digit nevative numbers
-                self.matrix[row][col] = self.blosum_string[str_index] + self.blosum_string[str_index + 1]
+                self.matrix[row][col] = \
+                    self.blosum_string[str_index] + \
+                    self.blosum_string[str_index + 1]
                 str_index += 2
                 col += 1
             

@@ -4,9 +4,8 @@ class edit_operations:
         self.string2 = string2
     
     def optimal_transcript(self):
-        # Will make use of edit_distance algoithm by optimal
-        # alignments at each step in table.
-        # Will reduce matrix to a vector to save space.
+        # Will reduce matrix to a vector to have 
+        # O(n) space complexity
 
         distance_row = [None] * (len(self.string2) + 1)
         transcript_row = [None] * (len(self.string2) + 1)
@@ -16,7 +15,8 @@ class edit_operations:
         for j in range(len(self.string2) + 1):
             distance_row[j] = j
             transcript_row[j] = 'I' * j 
-            # Boundary case will have to insert entire second string
+            # Boundary case have to insert entire second 
+            # string
 
         for i in range(len(self.string1)):
             # Store D(i-1, j-1) entries
@@ -38,17 +38,27 @@ class edit_operations:
                 if self.string1[i] == self.string2[j]:
                     char_match = 0
                 
-                distance_row[j + 1] = min(distance_row[j] + 1, distance_row[j + 1] + 1, dist_temp1 + char_match)
+                distance_row[j + 1] = min(distance_row[j] + 1, 
+                                    distance_row[j + 1] + 1, 
+                                    dist_temp1 + char_match)
 
                 # Update transcript row
-                # First find the operation used for minimal edit distance
-                operation = self.find_operation(distance_row[j] + 1, distance_row[j + 1] + 1, dist_temp1 + char_match, char_match)
-                transcript_row[j + 1] = self.update_transcript(transcript_row, operation, tran_temp1, j)
+                # First find the operation used 
+                # for minimal edit distance
+                operation = self.find_operation(
+                                    distance_row[j] + 1,
+                                    distance_row[j + 1] + 1, 
+                                    dist_temp1 + char_match, 
+                                    char_match)
+                transcript_row[j + 1] = \
+                    self.update_transcript(transcript_row, 
+                                operation, tran_temp1, j)
 
                 dist_temp1 = dist_temp2
                 tran_temp1 = tran_temp2
 
-        return distance_row[len(self.string2)], transcript_row[len(self.string2)][:50]
+        return distance_row[len(self.string2)], \
+                transcript_row[len(self.string2)][:50]
 
     def find_operation(self, dist1, dist2, dist3, char_match):
         # helper function for optimal_transcript
@@ -63,7 +73,8 @@ class edit_operations:
         else:
             return 'R'
 
-    def update_transcript(self, transcript_row, operation, temp, index):
+    def update_transcript(self, transcript_row, operation, 
+                                                temp, index):
         # helper function for optimal_transcript
         if operation == 'I':
             return transcript_row[index] + 'I'
@@ -112,8 +123,12 @@ class edit_operations:
 
 
 if __name__ == "__main__":
-    protein_A = 'MGLSDGEWQLVLKVWGKVEGDLPGHGQEVLIRLFKTHPETLEKFDKFKGLKTEDEMKASADLKKHGGTVLTALGNILKKKGQHEAELKPLAQSHATKHKISIKFLEYISEAIIHVLQSKHSADFGADAQAAMGKALELFRNDMAAKYKEFGFQG'
-    protein_B = 'MADFDAVLKCWGPVEADYTTMGGLVLTRLFKEHPETQKLFPKFAGIAQADIAGNAAISAHGATVLKKLGELLKAKGSHAAILKPLANSHATKHKIPINNFKLISEVLVKVMHEKAGLDAGGQTALRNVMGIIIADLEANYKELGFSG'
+    protein_A = 'MGLSDGEWQLVLKVWGKVEGDLPGHGQEVLIRLFKTHPETLEK\
+FDKFKGLKTEDEMKASADLKKHGGTVLTALGNILKKKGQHEAELKPLAQSHATKHKISIK\
+FLEYISEAIIHVLQSKHSADFGADAQAAMGKALELFRNDMAAKYKEFGFQG'
+    protein_B = 'MADFDAVLKCWGPVEADYTTMGGLVLTRLFKEHPETQKLFPKF\
+AGIAQADIAGNAAISAHGATVLKKLGELLKAKGSHAAILKPLANSHATKHKIPINNFKLI\
+SEVLVKVMHEKAGLDAGGQTALRNVMGIIIADLEANYKELGFSG'
 
     output = edit_operations(protein_A, protein_B)
     transcript = output.optimal_transcript()
