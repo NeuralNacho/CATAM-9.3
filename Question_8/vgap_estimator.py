@@ -66,7 +66,7 @@ class vgap_estimator:
             self.no_estimates *= multiplier
             result = self.get_results()
 
-        print('E(v_gap)/n estimate:        ', 
+        print('E(v_gap)/n estimate:       ', 
                                     result[0])
         print('sample standard deviation: ', 
                                     result[1])
