@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 import time
+import numpy as np
 import q8_vgap
+import vgap_estimator
 import random_sequence
 
 
@@ -13,21 +15,14 @@ class limit_estimator:
 
 
     def generate_estimate(self, n):
-        score_list = []
-        t_end = time.time() + 1
-        # Will give 1 seconds for estimate at individual n
-        # For any n in the 1000s this will only give
-        # Enough time for 1 test
-        while time.time() < t_end:
-            U_n = random_sequence.random_sequence(self.p, n)\
-                                            .get_sequence()
-            V_n = random_sequence.random_sequence(self.p, n)\
-                                            .get_sequence()
-            test = q8_vgap.q8_vgap(U_n, V_n, self.u)
-            score = test.get_score()
-            score_list.append(score)
-        
-        estimate = sum(score_list) / (n * len(score_list))
+        U_n = random_sequence.random_sequence(self.p, n)\
+                                        .get_sequence()
+        V_n = random_sequence.random_sequence(self.p, n)\
+                                        .get_sequence()
+        test = q8_vgap.q8_vgap(U_n, V_n, self.u)
+        score = test.get_score()
+
+        estimate = score / n
         return estimate
 
 
@@ -38,14 +33,13 @@ class limit_estimator:
         old_estimate = self.y_list[0]
         new_estimate = old_estimate + 3
         while n < 10000:
-        #while abs(new_estimate - old_estimate) > 2:
             n = int(n*1.25)
             print(n)
             self.x_list.append(n)
             self.y_list.append(self.generate_estimate(n))
             old_estimate = new_estimate
             new_estimate = self.y_list[-1]
-    
+
 
     def plot(self):
         self.generate_graph()
@@ -59,6 +53,22 @@ class limit_estimator:
         plt.show()
 
 
+    def estimate_limit(self):
+        max_runtime = 30  # 5 minutes
+        no_estimates = 15
+
+        calculator = vgap_estimator.vgap_estimator(
+            -3, 1/2, 5000, no_estimates, max_runtime)
+
+        result = calculator.get_results(no_estimates)
+
+        return result[0], result[2]
+
+
+
 if __name__ == '__main__':
     estimator = limit_estimator(-3, 1/2)
-    estimator.plot()
+    # estimator.plot()
+    results = estimator.estimate_limit()
+    print('Estimate mean: ', results[0])
+    print('Estimate std:  ', results[1])
