@@ -1,4 +1,4 @@
-from Question_4.blosum_matrix import blosum_matrix
+from blosum_matrix import blosum_matrix
 from Question_3.edit_operations import edit_operations
 
 

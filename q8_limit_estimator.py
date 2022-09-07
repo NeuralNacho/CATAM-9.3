@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from Question_8.q8_vgap import q8_vgap
-from Question_8.vgap_estimator import vgap_estimator
+from q8_vgap import q8_vgap
+from vgap_estimator import vgap_estimator
 from random_sequence import random_sequence
 
 
