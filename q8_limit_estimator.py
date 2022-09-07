@@ -1,9 +1,9 @@
 import matplotlib.pyplot as plt
 import time
 import numpy as np
-import q8_vgap
-import vgap_estimator
-import random_sequence
+from q8_vgap import q8_vgap
+from vgap_estimator import vgap_estimator
+from random_sequence import random_sequence
 
 
 class limit_estimator:
@@ -15,11 +15,9 @@ class limit_estimator:
 
 
     def generate_estimate(self, n):
-        U_n = random_sequence.random_sequence(self.p, n)\
-                                        .get_sequence()
-        V_n = random_sequence.random_sequence(self.p, n)\
-                                        .get_sequence()
-        test = q8_vgap.q8_vgap(U_n, V_n, self.u)
+        U_n = random_sequence(self.p, self.n).get_sequence()
+        V_n = random_sequence(self.p, self.n).get_sequence()
+        test = q8_vgap(U_n, V_n, self.u)
         score = test.get_score()
 
         estimate = score / n
@@ -43,7 +41,7 @@ class limit_estimator:
 
     def plot(self):
         self.generate_graph()
-        plt.rc('font', size = 24)
+        plt.rc('font', size = 32)
         plt.figure(1)
         plt.grid(linestyle = '--', linewidth = 0.5)
         plt.plot(self.x_list, self.y_list, color = 'C0')
@@ -54,13 +52,13 @@ class limit_estimator:
 
 
     def estimate_limit(self):
-        max_runtime = 30  # 5 minutes
-        no_estimates = 15
+        max_runtime = 300  # 5 minutes
+        no_estimates = 100  # will never reach this number
 
-        calculator = vgap_estimator.vgap_estimator(
-            -3, 1/2, 5000, no_estimates, max_runtime)
+        calculator = vgap_estimator(-3, 1/2, 6000, 
+                            no_estimates, max_runtime)
 
-        result = calculator.get_results(no_estimates)
+        result = calculator.get_results()
 
         return result[0], result[2]
 

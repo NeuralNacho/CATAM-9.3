@@ -1,6 +1,6 @@
 from mimetypes import init
-import random_sequence
-import q8_vgap
+from random_sequence import random_sequence
+from q8_vgap import q8_vgap
 import time
 import math
 import numpy as np
@@ -18,23 +18,21 @@ class vgap_estimator:
 
     
     def generate_estimate(self):
-        U_n = random_sequence.random_sequence(self.p,
-                                self.n).get_sequence()
-        V_n = random_sequence.random_sequence(self.p,
-                                self.n).get_sequence()
-        test = q8_vgap.q8_vgap(U_n, V_n, self.u)
+        U_n = random_sequence(self.p, self.n).get_sequence()
+        V_n = random_sequence(self.p, self.n).get_sequence()
+        test = q8_vgap(U_n, V_n, self.u)
         score = test.get_score()
     
         estimate = score / self.n
         return estimate
 
     
-    def get_results(self, no_estimates):
+    def get_results(self):
         # Finds error of the estimate
         # runtime in seconds
         estimate_list = []
         end_time = time.time() + self.max_runtime
-        while len(estimate_list) < no_estimates and \
+        while len(estimate_list) < self.no_estimates and \
                  time.time() < end_time:
             estimate = self.generate_estimate()
             estimate_list.append(estimate)
@@ -46,13 +44,15 @@ class vgap_estimator:
                         math.sqrt(len(estimate_list))
         # estimate_error is std deviation of sample mean
         # given the number of estimates in the sample
+        print('No tests in estimate list = ', 
+            len(estimate_list))
 
         return estimate_mean, std_dev, estimate_error
 
 
     def final_estimate(self):
         initial_time = time.time()
-        result = self.get_results(self.no_estimates)
+        result = self.get_results()
     # Considering distrubution of the sample mean (from sum
     # of normal distributions) can get it so that sample 
     # mean has standard deviation of 0.005/3 so there's a 
@@ -63,26 +63,26 @@ class vgap_estimator:
             print('Additional time used')
             # i.e. less than 30s passed
             multiplier = ( 3 * result[2] / 0.005)**2
-            result = self.get_results(self.no_estimates * 
-                                                multiplier)
+            self.no_estimates *= multiplier
+            result = self.get_results()
 
-        print('v_gap estimate:           ', 
+        print('E(v_gap)/n estimate:        ', 
                                     result[0])
-        print('v_gap standard deviation: ', 
+        print('sample standard deviation: ', 
                                     result[1])
-        print('v_gap error:              ', 
+        print('estimate error:            ', 
                                     result[2])  
 
 
 if __name__ == '__main__':
     # For first part of Question 8
 
-    n = 4000
+    n = 100
     max_runtime = 60
     no_estimates = 15
     # 15 tests will give good idea of error of standard  
-    # deviation. If runtime too high then use time
-    # instead
+    # deviation (for reasonably large n otherwise increase). 
+    # If runtime too high then will use time instead
 
     estimator = vgap_estimator(-3, 1/2, n, no_estimates,
                                             max_runtime)
