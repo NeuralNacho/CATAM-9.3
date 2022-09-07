@@ -62,9 +62,9 @@ class v_gap:
         return int(self.blosum_matrix.matrix[row][col])
     
     def update_transcript(self, G, row, col):
-        tpl = (self.row_max_matrix[row][col - 1] + self.u, 
+        tuple = (self.row_max_matrix[row][col - 1] + self.u, 
             self.col_max_matrix[row - 1][col] + self.u, G)
-        index = tpl.index(max(tpl))
+        index = tuple.index(max(tuple))
 
         if index == 0: # E represents insertion
             self.transcript_matrix[row][col] = \
@@ -144,7 +144,6 @@ PRPRCGPCNSFVR'
 
     output = v_gap(protein_C, protein_D, -12)
     transcript = output.get_transcript()[:50]
-
     print(output.get_score())
     print(transcript)
     print( output.get_alignment(transcript)[0] )
